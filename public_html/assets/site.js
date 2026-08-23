@@ -9,6 +9,14 @@ function splitName(value){
   return {first:parts.shift()||'',last:parts.join(' ')||'-'};
 }
 
+function normaliseUKPhone(value){
+  let phone=String(value||'').trim().replace(/[^\d+]/g,'');
+  if(phone.startsWith('+44'))phone='0'+phone.slice(3);
+  else if(phone.startsWith('0044'))phone='0'+phone.slice(4);
+  else if(phone.startsWith('44')&&!phone.startsWith('440'))phone='0'+phone.slice(2);
+  return phone;
+}
+
 function swipeOnePayload(data){
   const name=splitName(data.get('name'));
   const details=[
@@ -28,7 +36,7 @@ function swipeOnePayload(data){
     '5fabfd0504':name.last,
     '3b02e1c157':data.get('email')||'',
     '115af791da_countryCode':'GB',
-    '115af791da_number':data.get('phone')||'',
+    '115af791da_number':normaliseUKPhone(data.get('phone')),
     '99298f4bd0':data.get('service')||'Property maintenance enquiry',
     'ynd9wydy96':details,
     '_pageUrl':location.href
@@ -58,6 +66,8 @@ async function submitSwipeOne(form){
 }
 const pageForm=document.querySelector('[data-quote-form]');
 if(pageForm){
+  const phoneInput=pageForm.querySelector('input[name="phone"]');
+  if(phoneInput){phoneInput.placeholder='e.g. 07971 241112';phoneInput.inputMode='tel';phoneInput.autocomplete='tel-national'}
   const submitButton=pageForm.querySelector('button[type="submit"]');
   if(submitButton)submitButton.textContent='Send job request';
   const note=pageForm.querySelector('.notice');
