@@ -8,7 +8,9 @@ if ($post === null) {
     relet_public_header('Article not found | Re-Let', 'The requested Re-Let article could not be found.', RELET_SITE_URL . '/blog/');
     ?><main id="main"><section class="page-hero"><div class="container"><h1>Article not found</h1><p class="lead">The article may have been moved or unpublished.</p><a class="btn" href="/blog/">View property advice</a></div></section></main><?php relet_public_footer(); exit;
 }
-$canonical = RELET_SITE_URL . '/blog/' . $post['slug'] . '/';
+$canonical = is_file(__DIR__ . '/' . $post['slug'] . '.html')
+    ? RELET_SITE_URL . '/blog/' . rawurlencode($post['slug']) . '.html'
+    : RELET_SITE_URL . '/blog/post.php?slug=' . rawurlencode($post['slug']);
 $image = !empty($post['feature_image_url']) ? $post['feature_image_url'] : RELET_SITE_URL . '/assets/og-relet.jpg';
 $breadcrumb = relet_schema_breadcrumb($canonical, [
     ['Home', RELET_SITE_URL . '/'],

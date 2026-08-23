@@ -3,9 +3,9 @@ RE-LET LEGACY REDIRECT MAP
 
 Preserved from the previous site / original ZIP:
 
-/blog/void-property-checklist.html  -> /blog/void-property-checklist/   301
-/blog/repair-or-replace.html        -> /blog/repair-or-replace/         301
-/blog/door-maintenance.html         -> /blog/door-maintenance/          301
+/blog/void-property-checklist/  -> /blog/void-property-checklist.html   301
+/blog/repair-or-replace/        -> /blog/repair-or-replace.html         301
+/blog/door-maintenance/         -> /blog/door-maintenance.html          301
 /services/                          -> /services.html                    301
 /repairs.html                       -> /landlord-repairs.html            301
 /agents.html                        -> /letting-agents.html              301
