@@ -2,13 +2,68 @@ const toggle=document.querySelector('.nav-toggle'),nav=document.querySelector('.
 if(toggle&&nav)toggle.addEventListener('click',()=>{const open=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open))});
 document.querySelectorAll('[data-year]').forEach(el=>el.textContent=new Date().getFullYear());
 
-function emailQuote(data){
-  const subject=encodeURIComponent('Re-Let quote request: '+(data.get('service')||'Property work'));
-  const body=encodeURIComponent(`Name: ${data.get('name')||''}\nPhone: ${data.get('phone')||''}\nEmail: ${data.get('email')||''}\nPostcode: ${data.get('postcode')||''}\nCustomer: ${data.get('customer_type')||''}\nService: ${data.get('service')||''}\nProperty status: ${data.get('occupancy')||''}\nAccess: ${data.get('access')||''}\nUrgency: ${data.get('urgency')||''}\nPreferred contact: ${data.get('contact_method')||''}\n\nDetails:\n${data.get('details')||''}`);
-  location.href=`mailto:info@relet.co.uk?subject=${subject}&body=${body}`;
+const swipeOneEndpoint='https://api.swipeone.com/forms/6a731122bf95d8007f6fee5d/submit';
+
+function splitName(value){
+  const parts=String(value||'').trim().split(/\s+/).filter(Boolean);
+  return {first:parts.shift()||'',last:parts.join(' ')||'-'};
+}
+
+function swipeOnePayload(data){
+  const name=splitName(data.get('name'));
+  const details=[
+    `Postcode: ${data.get('postcode')||''}`,
+    `Customer: ${data.get('customer_type')||''}`,
+    `Service: ${data.get('service')||''}`,
+    `Property status: ${data.get('occupancy')||''}`,
+    `Access: ${data.get('access')||''}`,
+    `Urgency: ${data.get('urgency')||''}`,
+    `Preferred contact: ${data.get('contact_method')||''}`,
+    '',
+    'Job details:',
+    data.get('details')||''
+  ].join('\n');
+  return {
+    '435c1b3142':name.first,
+    '5fabfd0504':name.last,
+    '3b02e1c157':data.get('email')||'',
+    '115af791da_countryCode':'GB',
+    '115af791da_number':data.get('phone')||'',
+    '99298f4bd0':data.get('service')||'Property maintenance enquiry',
+    'ynd9wydy96':details,
+    '_pageUrl':location.href
+  };
+}
+
+async function submitSwipeOne(form){
+  const button=form.querySelector('button[type="submit"]');
+  let status=form.querySelector('[data-form-status]');
+  if(!status){status=document.createElement('p');status.className='notice';status.dataset.formStatus='';status.setAttribute('role','status');status.setAttribute('aria-live','polite');form.appendChild(status)}
+  const original=button?.textContent||'Submit request';
+  if(button){button.disabled=true;button.textContent='Submitting…'}
+  status.textContent='Sending your job request…';
+  try{
+    const response=await fetch(swipeOneEndpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(swipeOnePayload(new FormData(form)))});
+    const result=await response.json();
+    if(!response.ok||result.status!=='success')throw new Error(result.message||'Submission failed');
+    if(result.data?.redirectUrl){location.href=result.data.redirectUrl;return}
+    form.reset();
+    status.textContent=result.data?.message||'Thank you. Your job request has been received and we’ll be in touch shortly.';
+    status.focus?.();
+  }catch(_){
+    status.innerHTML='We could not send the form. Please try again, call <a href="tel:+441156612041">0115 661 2041</a>, or use <a href="https://wa.me/447971241112">WhatsApp</a>.';
+  }finally{
+    if(button){button.disabled=false;button.textContent=original}
+  }
 }
 const pageForm=document.querySelector('[data-quote-form]');
-if(pageForm)pageForm.addEventListener('submit',e=>{e.preventDefault();emailQuote(new FormData(pageForm))});
+if(pageForm){
+  const submitButton=pageForm.querySelector('button[type="submit"]');
+  if(submitButton)submitButton.textContent='Send job request';
+  const note=pageForm.querySelector('.notice');
+  if(note)note.innerHTML='<strong>Photos:</strong> after submitting, send photographs or video by WhatsApp to <a href="https://wa.me/447971241112">07971 241112</a>. Your job details will be sent securely to Re-Let through Swipe One.';
+  pageForm.addEventListener('submit',e=>{e.preventDefault();submitSwipeOne(pageForm)});
+}
 
 // Cookie / similar-technology consent.
 const uiCss=document.createElement('link');uiCss.rel='stylesheet';uiCss.href='/assets/consent-modal.css';document.head.appendChild(uiCss);
@@ -81,16 +136,3 @@ reopen.addEventListener('click',()=>{
   banner.querySelector('[data-cookie="accept"]')?.focus();
 });
 
-// Quote modal used by service-page CTAs where dialog support is available.
-const dialog=document.createElement('dialog');dialog.className='quote-modal';
-dialog.innerHTML=`<div class="modal-head"><div><p class="eyebrow">Request a quote</p><h2>Tell us what needs doing and we’ll get back to you with the next step.</h2></div><button class="modal-close" type="button" aria-label="Close quote form">×</button></div><form class="form"><div class="form-row"><label>Name<input name="name" autocomplete="name" required></label><label>Phone number<input name="phone" type="tel" autocomplete="tel" required></label></div><label>Email<input name="email" type="email" autocomplete="email"></label><div class="form-row"><label>Property postcode<input name="postcode" autocomplete="postal-code" required></label><label>You are<select name="customer_type"><option>Landlord</option><option>Letting agent</option><option>Property manager</option><option>Homeowner</option></select></label></div><label>Service needed<select name="service" required><option value="">Choose one</option><option>Landlord repair</option><option>Void turnaround</option><option>End-of-tenancy / void cleaning</option><option>Joinery / doors / windows</option><option>Refurbishment</option><option>Other</option></select></label><label>Brief job description<textarea name="details" required></textarea></label><label>Preferred contact method<select name="contact_method"><option>Phone</option><option>Email</option><option>WhatsApp</option></select></label><label class="consent"><input type="checkbox" required> I agree that Re-Let may use my details to respond to this enquiry. See our <a href="/privacy.html">Privacy Policy</a>.</label><p class="notice">Required fields are limited to what we need for a useful first response.</p><button class="btn" type="submit">Prepare enquiry email</button></form>`;
-document.body.appendChild(dialog);
-let opener;
-document.addEventListener('click',e=>{
-  const link=e.target.closest('a[href$="contact.html"],a[href="/contact.html"]');
-  if(link&&dialog.showModal){e.preventDefault();opener=link;dialog.showModal();dialog.querySelector('input')?.focus()}
-});
-dialog.querySelector('.modal-close')?.addEventListener('click',()=>dialog.close());
-dialog.addEventListener('close',()=>opener?.focus());
-dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});
-dialog.querySelector('form')?.addEventListener('submit',e=>{e.preventDefault();emailQuote(new FormData(e.target))});
