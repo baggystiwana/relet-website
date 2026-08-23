@@ -1,6 +1,25 @@
 const toggle=document.querySelector('.nav-toggle'),nav=document.querySelector('.nav-links');
-if(toggle&&nav)toggle.addEventListener('click',()=>{const open=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open))});
+function setNav(open){if(!toggle||!nav)return;nav.classList.toggle('open',open);toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'Close menu':'Open menu')}
+if(toggle&&nav){
+  toggle.addEventListener('click',()=>setNav(!nav.classList.contains('open')));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&nav.classList.contains('open')){setNav(false);toggle.focus()}});
+  document.addEventListener('click',e=>{if(nav.classList.contains('open')&&!nav.contains(e.target)&&e.target!==toggle)setNav(false)});
+  nav.addEventListener('click',e=>{if(e.target.closest('a'))setNav(false)});
+}
 document.querySelectorAll('[data-year]').forEach(el=>el.textContent=new Date().getFullYear());
+
+// Build FAQ structured data only from visible on-page questions and answers.
+const faqItems=[...document.querySelectorAll('.faq-list details')].map(item=>{
+  const question=item.querySelector('summary')?.textContent.trim();
+  const answer=item.querySelector('p')?.textContent.trim();
+  return question&&answer?{'@type':'Question',name:question,acceptedAnswer:{'@type':'Answer',text:answer}}:null;
+}).filter(Boolean);
+if(faqItems.length){
+  const faqSchema=document.createElement('script');
+  faqSchema.type='application/ld+json';
+  faqSchema.textContent=JSON.stringify({'@context':'https://schema.org','@type':'FAQPage',mainEntity:faqItems});
+  document.head.appendChild(faqSchema);
+}
 
 const swipeOneEndpoint='https://api.swipeone.com/forms/6a731122bf95d8007f6fee5d/submit';
 
@@ -145,4 +164,3 @@ reopen.addEventListener('click',()=>{
   analyticsBox.checked=!!consent?.analytics;
   banner.querySelector('[data-cookie="accept"]')?.focus();
 });
-
