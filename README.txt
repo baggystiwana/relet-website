@@ -40,4 +40,3 @@ Feature images may use an HTTPS URL or a root-relative path such as `/assets/exa
 - Back up `relet-data` before major edits or hosting changes.
 - Keep PHP and cPanel security updates current.
 - `/admin/` is blocked from indexing in `robots.txt`, but authentication—not robots rules—protects it.
-

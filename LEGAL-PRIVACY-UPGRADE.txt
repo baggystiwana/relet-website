@@ -1,0 +1,27 @@
+RE-LET LEGAL / PRIVACY UPGRADE
+Updated: 22 August 2026
+
+Implemented:
+- Site-wide Privacy Policy, Cookie Policy and Terms of Service footer links.
+- Site-wide limited-company disclosure for Gifford Hanson Limited.
+- Verified company number 03030287 and registered office disclosure.
+- Privacy Policy expanded for enquiries, property/job data, lawful bases, sharing, retention, rights and complaints.
+- Cookie Policy expanded for localStorage preferences, ClickRank and click-to-load Gumlet video.
+- Cookie consent UI includes Accept all, Reject non-essential and Manage preferences.
+- Consent is stored in localStorage under relet-cookie-preferences-v2.
+- ClickRank is no longer loaded before optional analytics/SEO-performance consent.
+- Withdrawing an existing analytics consent reloads the page so ClickRank is not reloaded.
+- Gumlet video remains click-to-load only.
+- Contact forms include a just-in-time Privacy Policy link.
+- Business schema now includes legalName Gifford Hanson Limited and Companies House identifier 03030287.
+- Dynamic blog templates inherit legal footer links and company disclosure.
+
+QA:
+- 21 static HTML pages checked.
+- 21 JSON-LD blocks parsed successfully.
+- 10 PHP files pass syntax validation.
+- Dynamic blog index/post smoke tests passed.
+- No unconditional ClickRank script remains on public HTML/PHP output.
+
+Operational note:
+The published privacy retention periods and service descriptions should match Re-Let's actual internal practices. Job-specific commercial terms, prices, deposits, cancellation arrangements and VAT treatment remain governed by the relevant quotation/contract and should be kept consistent with the Terms of Service.

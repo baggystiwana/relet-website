@@ -1,0 +1,29 @@
+RE-LET LEGACY REDIRECT MAP
+===========================
+
+Preserved from the previous site / original ZIP:
+
+/blog/void-property-checklist.html  -> /blog/void-property-checklist/   301
+/blog/repair-or-replace.html        -> /blog/repair-or-replace/         301
+/blog/door-maintenance.html         -> /blog/door-maintenance/          301
+/services/                          -> /services.html                    301
+/repairs.html                       -> /landlord-repairs.html            301
+/agents.html                        -> /letting-agents.html              301
+/empty-page-fean2/                  -> /about.html                       301
+/contact                            -> /contact.html                     301
+/quotation/                         -> /contact.html                     301
+/empty-page-bo8m5/                  -> /privacy.html                     301
+/privacy-2/                         -> /terms.html                       301
+
+Additional legacy routes found on the live old website and added:
+
+/CTA                                -> /contact.html                     301
+/appointment/                       -> /contact.html                     301
+
+Canonical hostname:
+www.relet.co.uk/*                   -> https://relet.co.uk/*             301
+
+Notes:
+- Internal blog rewriting remains internal (not a redirect) for /blog/ and clean article URLs.
+- These rules should stay in public_html/.htaccess when the new site is deployed.
+- Upload/extract hidden files in cPanel so .htaccess is not accidentally omitted.

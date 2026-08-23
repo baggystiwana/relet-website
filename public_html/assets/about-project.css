@@ -1,0 +1,17 @@
+.about-project-image { margin: 0; }
+
+.about-project-image img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: 50% 54%;
+  border-radius: 1.125rem;
+  box-shadow: 0 1rem 2.5rem rgba(23, 35, 31, .16);
+}
+
+.about-project-image figcaption {
+  margin-top: .75rem;
+  color: #5e6964;
+  font-size: .92rem;
+}

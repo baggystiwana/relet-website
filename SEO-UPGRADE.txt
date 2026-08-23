@@ -1,0 +1,26 @@
+RE-LET SEO CONTENT + INTERNAL LINKING UPGRADE
+Date: 22 August 2026
+
+Primary commercial search intents strengthened:
+1. Property maintenance Nottingham
+2. Void property turnaround Nottingham
+3. Property maintenance for Nottingham letting agents
+
+What changed:
+- Homepage title and description now lead with Property Maintenance Nottingham.
+- Added a dedicated Nottingham property-maintenance service hub on the homepage.
+- Strengthened homepage internal links to repairs, voids, agents, refurbishments and areas covered.
+- Reworked landlord-repairs H1, lead copy and contextual links.
+- Reworked void-turnaround title, H1, lead copy and related-service links.
+- Reworked letting-agent H1, lead copy, service links and local coverage content.
+- Strengthened refurbishment, cleaning and joinery cross-links.
+- Rebuilt Services as a six-route commercial hub.
+- Rebuilt Areas Covered service cards and fixed the malformed combined heading.
+- Strengthened case-study links back to the commercial service pages.
+- Added contextual commercial links from dynamic blog articles.
+- Updated the dynamic blog navigation to include Refurbishments and Advice.
+- Replaced /blog/index.html and .html article links with the canonical clean blog URLs to avoid unnecessary internal redirects.
+- Kept the existing 10/10 entity/schema architecture and updated relevant page schema titles/descriptions to match the new on-page content.
+
+Principle used:
+Search phrases are used naturally in titles, headings, explanatory copy and descriptive link text. No keyword stuffing, fake locations, fabricated reviews, invented statistics or doorway location pages were added.

@@ -1,0 +1,32 @@
+RE-LET STRUCTURED DATA UPGRADE — 22 AUGUST 2026
+
+Implemented
+- One canonical Re-Let business entity: https://relet.co.uk/#business
+- HomeAndConstructionBusiness with full postal address, contact details, service area, knowledge topics and service catalogue
+- WebSite entity linked to the business
+- Page-level WebPage / AboutPage / ContactPage / CollectionPage entities
+- Service entities for repairs, void turnarounds, tenancy cleaning, joinery, refurbishments and letting-agent maintenance support
+- BreadcrumbList entities linked to their pages
+- ItemList entities for services, working areas, case studies and advice listings
+- Article schema for case studies, linked to the relevant service/business
+- BlogPosting schema for advice articles, with publisher/author/page/image relationships
+- Dynamic blog PHP updated so future published posts inherit the same schema architecture
+- Legacy FAQPage markup removed because Google deprecated FAQ rich results on 7 May 2026
+
+Deliberately NOT invented
+- Opening hours
+- Price range
+- Social/sameAs profiles
+- Aggregate ratings/reviews
+- Geographic coordinates
+
+Add those later only when Re-Let has authoritative public data for them.
+
+Deployment checks
+1. Upload the contents preserving public_html and relet-data.
+2. Test the homepage, one service page, one case study and one blog post in Google's Rich Results Test.
+3. Inspect those same URLs in Google Search Console after deployment.
+4. Resubmit https://relet.co.uk/sitemap.xml if the deployment changes indexed URLs.
+
+Important
+Structured data helps search engines understand entities and may enable supported rich-result features, but it does not guarantee rankings or rich-result display.
